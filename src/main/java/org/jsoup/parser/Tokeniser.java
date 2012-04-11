@@ -150,7 +150,7 @@ class Tokeniser {
                 reader.rewindToMark();
                 return null;
             }
-            if ((inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matches('='))) || !(inAttribute || looksLegit)) {
+            if ((inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matchesAny('=', '-', '_'))) || !(inAttribute || looksLegit)) {
                 // don't want that to match
                 reader.rewindToMark();
                 return null;
