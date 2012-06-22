@@ -122,4 +122,24 @@ public class CleanerTest {
         String preserved = Jsoup.clean(html, Whitelist.basicWithImages().addProtocols("img", "src", "cid", "data"));
         assertEquals("<img src=\"cid:12345\" /> \n<img src=\"data:gzzt\" />", preserved);
     }
+
+    @Test public void handlesAllPseudoTag() {
+        String html = "<p class='foo' src='bar'><a class='qux'>link</a></p>";
+        Whitelist whitelist = new Whitelist()
+                .addAttributes(":all", "class")
+                .addAttributes("p", "style")
+                .addTags("p", "a");
+
+        String clean = Jsoup.clean(html, whitelist);
+        assertEquals("<p class=\"foo\"><a class=\"qux\">link</a></p>", clean);
+    }
+
+    @Test public void addsTagOnAttributesIfNotSet() {
+        String html = "<p class='foo' src='bar'>One</p>";
+        Whitelist whitelist = new Whitelist()
+            .addAttributes("p", "class");
+        // ^^ whitelist does not have explicit tag add for p, inferred from add attributes.
+        String clean = Jsoup.clean(html, whitelist);
+        assertEquals("<p class=\"foo\">One</p>", clean);
+    }
 }

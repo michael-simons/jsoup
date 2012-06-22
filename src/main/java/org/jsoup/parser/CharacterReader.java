@@ -3,7 +3,7 @@ package org.jsoup.parser;
 import org.jsoup.helper.Validate;
 
 /**
- CharacterReader cosumes tokens off a string. To replace the old TokenQueue.
+ CharacterReader consumes tokens off a string. To replace the old TokenQueue.
  */
 class CharacterReader {
     static final char EOF = (char) -1;
@@ -107,6 +107,26 @@ class CharacterReader {
         while (!isEmpty()) {
             char c = input.charAt(pos);
             if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                pos++;
+            else
+                break;
+        }
+
+        return input.substring(start, pos);
+    }
+
+    String consumeLetterThenDigitSequence() {
+        int start = pos;
+        while (!isEmpty()) {
+            char c = input.charAt(pos);
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+                pos++;
+            else
+                break;
+        }
+        while (!isEmpty()) {
+            char c = input.charAt(pos);
+            if (c >= '0' && c <= '9')
                 pos++;
             else
                 break;
