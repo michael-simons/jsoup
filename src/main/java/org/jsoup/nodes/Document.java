@@ -1,5 +1,6 @@
 package org.jsoup.nodes;
 
+import org.jsoup.helper.StringUtil;
 import org.jsoup.helper.Validate;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
@@ -64,8 +65,9 @@ public class Document extends Element {
      @return Trimmed title, or empty string if none set.
      */
     public String title() {
+        // title is a preserve whitespace tag (for document output), but normalised here
         Element titleEl = getElementsByTag("title").first();
-        return titleEl != null ? titleEl.text().trim() : "";
+        return titleEl != null ? StringUtil.normaliseWhitespace(titleEl.text()).trim() : "";
     }
 
     /**
@@ -332,6 +334,17 @@ public class Document extends Element {
      */
     public OutputSettings outputSettings() {
         return outputSettings;
+    }
+
+    /**
+     * Set the document's output settings.
+     * @param outputSettings new output settings.
+     * @return this document, for chaining.
+     */
+    public Document outputSettings(OutputSettings outputSettings) {
+        Validate.notNull(outputSettings);
+        this.outputSettings = outputSettings;
+        return this;
     }
 
     public enum QuirksMode {
