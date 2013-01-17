@@ -123,7 +123,9 @@ class Tokeniser {
             if (charval == -1 || (charval >= 0xD800 && charval <= 0xDFFF) || charval > 0x10FFFF) {
                 characterReferenceError("character outside of valid range");
                 return replacementString;
-            } else {
+			} else if(Character.isSupplementaryCodePoint(charval)) {
+				return String.format("&#x%s;", Integer.toHexString(charval));
+			} else {
                 // todo: implement number replacement table
                 // todo: check for extra illegal unicode points as parse errors
                 return new String(new int[]{charval}, 0, 1);

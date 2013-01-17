@@ -88,7 +88,7 @@ public class Entities {
         for (int pos = 0; pos < string.length(); pos++) {
             Character c = string.charAt(pos);
 			if(pos < string.length() - 1 && Character.isSurrogatePair(c, string.charAt(pos+1)))
-				accum.append("&#x").append(Integer.toHexString(string.codePointAt(pos++))).append(';');				
+				accum.append(new String(new int[]{string.codePointAt(pos++)}, 0, 1));				
             else if (map.containsKey(c))
                 accum.append('&').append(map.get(c)).append(';');
             else if (encoder.canEncode(c))
